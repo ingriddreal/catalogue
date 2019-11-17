@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Catalogue</string>
+    <string name="free_shipping_text">Free shipping World Wide</string>
+    <string name="colours_text">Colours</string>
+    <string name="sizes_text">Sizes</string>
+    <string name="rate_product_text">Rate the \n product</string>
+    <string name="product_catalogue_text">Product catalogue</string>
+    <string name="total_text">Total</string>
+    <string name="your_wish_list_text">Your wish list</string>
+    <string name="proceed_checkout_text">Are you sure you want to proceed to check out?</string>
+    <string name="generic_item_description_text">Our mountain Briefcase is the ultimate shape changing go to work, burn around town, travel the world, do it all every day carry</string>
+    <string name="add_to_wish_list_text">Add to wish list</string>
+    <string name="remove_from_wish_list_text">Remove from wish list</string>
+    <string name="out_of_stock_text">Out of stock</string>
+    <string name="app_name_toolbar">TASH</string>
+
+</resources>
