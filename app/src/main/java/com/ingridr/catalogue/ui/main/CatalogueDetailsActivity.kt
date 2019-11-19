@@ -23,13 +23,14 @@ class CatalogueDetailsActivity : AppCompatActivity() {
     companion object {
         const val SELECTED_PRODUCT = "selectedProduct"
 
-        fun createArguments(product: Product) : Bundle {
+        fun createArguments(product: Product): Bundle {
             val gson = Gson()
             val bundle = Bundle()
             bundle.putString(SELECTED_PRODUCT, gson.toJson(product))
             return bundle
         }
     }
+
     private lateinit var viewModel: CatalogueDetailsViewModel
     private lateinit var binding: CatalogueItemDetailBinding
     private lateinit var product: Product
@@ -42,6 +43,12 @@ class CatalogueDetailsActivity : AppCompatActivity() {
         setContentView(R.layout.detail_activity)
         val toolBar = findViewById<Toolbar>(R.id.my_toolbar)
 
+        viewModel.uiEvent.observe(this, Observer {
+            when(it){
+                UiEvents.FINISH ->
+                    this.finish()
+            }
+        })
         val productStr = intent.extras?.get(SELECTED_PRODUCT)
         productStr?.let {
             product = gson.fromJson<Product>(it.toString(), Product::class.java)
@@ -50,10 +57,7 @@ class CatalogueDetailsActivity : AppCompatActivity() {
             }
         }
         startCatalogueDetails()
-//        viewModel.product.observe(this, Observer {
-//            initToolbar(toolBar, it.title)
-//            updateProduct(it)
-//        })
+
     }
 
     private fun startCatalogueDetails() {
@@ -62,33 +66,8 @@ class CatalogueDetailsActivity : AppCompatActivity() {
         transaction.addToBackStack(null)
         transaction.commit()
     }
-//    private fun updateProduct(product: Product) {
-//        Glide.with(applicationContext)
-//            .load(product.image).apply(RequestOptions().circleCrop())
-//            .into(itemImage)
-//        itemPrice.text = product.price.toString()
-//
-////        productDescription.text = product.description
-//        product.colors?.let {
-//            it.forEachIndexed { index, color ->
-//                if(index == 0) {
-//                    firstColour?.visibility = View.VISIBLE
-//                    firstColour.setBackgroundColor(android.graphics.Color.parseColor(color.code))
-//                }
-//                else if (index == 1){
-//                    secondColour?.visibility = View.VISIBLE
-//                    secondColour.setBackgroundColor(android.graphics.Color.parseColor(color.code))
-//                }
-//                else {
-//                    thirdColour?.visibility = View.VISIBLE
-//                    thirdColour.setBackgroundColor(android.graphics.Color.parseColor(color.code))
-//                }
-//            }
-//        }
-//    }
 
     private fun initToolbar(toolbar: Toolbar, title: String?) {
-
         toolbar.title = title
         setSupportActionBar(toolbar)
 
@@ -102,13 +81,6 @@ class CatalogueDetailsActivity : AppCompatActivity() {
             this.finish()
             true
         }
-//        R.id.home -> {
-//            NavUtils.navigateUpFromSameTask(this)
-//            //this.finish()
-//            true
-//        }
-
-
         else -> {
             super.onOptionsItemSelected(item)
         }

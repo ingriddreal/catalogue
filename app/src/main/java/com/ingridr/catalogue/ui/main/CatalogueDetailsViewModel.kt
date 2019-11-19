@@ -8,12 +8,18 @@ import com.ingridr.catalogue.model.Color
 import com.ingridr.catalogue.model.Product
 import com.ingridr.catalogue.network.AppDatabase
 
+enum class UiEvents{
+    LOADING,
+    ERROR,
+    FINISH
+}
 class CatalogueDetailsViewModel : ViewModel(), LifecycleObserver {
 
     val product = MutableLiveData<Product>()
     val colors = MutableLiveData<List<Color>>()
     var dataBase: AppDatabase? = null
 
+    val uiEvent = MutableLiveData<Pair<UiEvents, String>>()
     var description = MutableLiveData<String>()
 
     fun updateProductDetail(product: Product) {
@@ -24,15 +30,19 @@ class CatalogueDetailsViewModel : ViewModel(), LifecycleObserver {
 
     fun addToWishList() {
         dataBase?.let {
-            if (product.value != null)
+            if (product.value != null) {
                 it.productDao().insertWishList(product.value!!)
+                uiEvent.value = Pair(UiEvents.FINISH, "")
+            }
         }
     }
 
     fun removeFromWishList() {
         dataBase?.let {
-            if (product.value != null)
+            if (product.value != null) {
                 it.productDao().deleteWishList(product.value!!)
+            }
+            uiEvent.value = Pair(UiEvents.FINISH, "")
         }
     }
 
