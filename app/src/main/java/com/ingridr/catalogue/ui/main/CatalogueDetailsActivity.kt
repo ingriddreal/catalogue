@@ -12,10 +12,10 @@ import com.bumptech.glide.request.RequestOptions
 import com.ingridr.catalogue.R
 import com.ingridr.catalogue.model.Product
 import com.google.gson.Gson
-import com.ingridr.catalogue.databinding.CatalogueItemDetailBinding
 import kotlinx.android.synthetic.main.catalogue_item_detail.*
 import android.view.View
 import androidx.databinding.library.baseAdapters.BR
+import com.ingridr.catalogue.CatalogueItemDetailBinding
 import com.ingridr.catalogue.model.Color
 
 class CatalogueDetailsActivity : AppCompatActivity() {
@@ -32,55 +32,60 @@ class CatalogueDetailsActivity : AppCompatActivity() {
     }
     private lateinit var viewModel: CatalogueDetailsViewModel
     private lateinit var binding: CatalogueItemDetailBinding
+    private lateinit var product: Product
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         val gson = Gson()
         binding = DataBindingUtil.setContentView(this, R.layout.catalogue_item_detail)
         viewModel = ViewModelProviders.of(this).get(CatalogueDetailsViewModel::class.java)
-        setContentView(R.layout.catalogue_item_detail)
-
-        binding.setVariable(BR.model,viewModel)
-        binding.lifecycleOwner = this
+        setContentView(R.layout.detail_activity)
+        val toolBar = findViewById<Toolbar>(R.id.my_toolbar)
 
         val productStr = intent.extras?.get(SELECTED_PRODUCT)
         productStr?.let {
-            val product = gson.fromJson<Product>(it.toString(), Product::class.java)
+            product = gson.fromJson<Product>(it.toString(), Product::class.java)
             if (product != null) {
-                viewModel.updateProductDetail(product)
+                initToolbar(toolBar, product.title)
             }
         }
-        val toolBar = findViewById<Toolbar>(R.id.customToolBar)
-        viewModel.product.observe(this, Observer {
-            initToolbar(toolBar, it.title)
-            updateProduct(it)
-        })
-        super.onCreate(savedInstanceState)
+        startCatalogueDetails()
+//        viewModel.product.observe(this, Observer {
+//            initToolbar(toolBar, it.title)
+//            updateProduct(it)
+//        })
     }
 
-    private fun updateProduct(product: Product) {
-        Glide.with(applicationContext)
-            .load(product.image).apply(RequestOptions().circleCrop())
-            .into(itemImage)
-        itemPrice.text = product.price.toString()
-
-//        productDescription.text = product.description
-        product.colors?.let {
-            it.forEachIndexed { index, color ->
-                if(index == 0) {
-                    firstColour?.visibility = View.VISIBLE
-                    firstColour.setBackgroundColor(android.graphics.Color.parseColor(color.code))
-                }
-                else if (index == 1){
-                    secondColour?.visibility = View.VISIBLE
-                    secondColour.setBackgroundColor(android.graphics.Color.parseColor(color.code))
-                }
-                else {
-                    thirdColour?.visibility = View.VISIBLE
-                    thirdColour.setBackgroundColor(android.graphics.Color.parseColor(color.code))
-                }
-            }
-        }
+    private fun startCatalogueDetails() {
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.add(R.id.detailsContainer, CatalogueDetailFragment.newInstance(product))
+        transaction.addToBackStack(null)
+        transaction.commit()
     }
+//    private fun updateProduct(product: Product) {
+//        Glide.with(applicationContext)
+//            .load(product.image).apply(RequestOptions().circleCrop())
+//            .into(itemImage)
+//        itemPrice.text = product.price.toString()
+//
+////        productDescription.text = product.description
+//        product.colors?.let {
+//            it.forEachIndexed { index, color ->
+//                if(index == 0) {
+//                    firstColour?.visibility = View.VISIBLE
+//                    firstColour.setBackgroundColor(android.graphics.Color.parseColor(color.code))
+//                }
+//                else if (index == 1){
+//                    secondColour?.visibility = View.VISIBLE
+//                    secondColour.setBackgroundColor(android.graphics.Color.parseColor(color.code))
+//                }
+//                else {
+//                    thirdColour?.visibility = View.VISIBLE
+//                    thirdColour.setBackgroundColor(android.graphics.Color.parseColor(color.code))
+//                }
+//            }
+//        }
+//    }
 
     private fun initToolbar(toolbar: Toolbar, title: String?) {
 
@@ -109,12 +114,4 @@ class CatalogueDetailsActivity : AppCompatActivity() {
         }
     }
 
-//    override fun onActivityCreated(savedInstanceState: Bundle?) {
-//        super.onActivityCreated(savedInstanceState)
-////        viewModel.init()
-////        viewModel.products.observe(this, androidx.lifecycle.Observer {
-////            listProducts.adapter = ProductsAdapter(it,this)
-////        })
-//        // TODO: Use the ViewModel
-//    }
 }

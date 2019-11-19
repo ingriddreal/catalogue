@@ -11,25 +11,14 @@ import com.bumptech.glide.request.RequestOptions
 import com.ingridr.catalogue.R
 import com.ingridr.catalogue.model.Product
 
-enum class ProductType {
-    CATALOGUE,
-    WISHLIST
-}
 class ProductsAdapter(
     private val products: List<Product>,
-    private val listener: OnItemClickListener,
-    private val productType: ProductType = ProductType.CATALOGUE
+    private val listener: OnItemClickListener
 ) :
     RecyclerView.Adapter<ProductsAdapter.ProductsViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductsViewHolder {
-        return when(productType) {
-            ProductType.CATALOGUE->
-                ProductsViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.catalogue_item, parent, false))
-
-            ProductType.WISHLIST ->
-                ProductsViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.wish_list_item, parent, false))
-        }
+        return ProductsViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.catalogue_item, parent, false))
     }
 
     override fun getItemCount(): Int {
@@ -40,7 +29,6 @@ class ProductsAdapter(
         val product = products[position]
 
         val options = RequestOptions()
-            .centerCrop()
             .placeholder(R.mipmap.ic_launcher_round)
             .error(R.mipmap.ic_launcher_round)
         Glide.with(holder.itemView.context).load(product?.image).apply(options)
@@ -54,13 +42,9 @@ class ProductsAdapter(
         fun onItemClick(product: Product)
     }
 
-    inner class ProductsViewHolder(itemView: View, private val productType: ProductType = ProductType.CATALOGUE) : RecyclerView.ViewHolder(itemView) {
+    inner class ProductsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         val productName: TextView = itemView.findViewById(R.id.itemName)
-        var productDescription: TextView? = null
-        var colorView1: View? = null
-        var colorView2:View? = null
-        var colorView3: View? = null
         val image: ImageView = itemView.findViewById(R.id.itemImage)
 
         fun bind(product: Product, listener: OnItemClickListener) {

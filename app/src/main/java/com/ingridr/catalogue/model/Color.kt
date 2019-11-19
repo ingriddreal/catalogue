@@ -7,9 +7,12 @@ class Color {
 
     @SerializedName("code")
     @Expose
-    var code: String? = null
+    private var code: String? = null
     @SerializedName("name")
     @Expose
     var name: String? = null
 
+    fun getColor() : Int {
+        return android.graphics.Color.parseColor(code)
+    }
 }

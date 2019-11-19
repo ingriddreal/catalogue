@@ -21,6 +21,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    defaultConfig {
+        vectorDrawables.useSupportLibrary = true
+    }
     dataBinding {
         enabled true
     }
@@ -29,6 +32,7 @@ android {
 dependencies {
     def recyclerview_version = "1.0.0"
     def lifecycle_version = "1.1.1"
+    def room_version = "2.2.1"
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
@@ -41,17 +45,37 @@ dependencies {
     implementation "androidx.recyclerview:recyclerview:$recyclerview_version"
     implementation "android.arch.lifecycle:extensions:$lifecycle_version"
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+    implementation "androidx.transition:transition:1.2.0"
+    implementation "androidx.vectordrawable:vectordrawable:1.1.0" // VectorDrawableCompat
+    implementation "androidx.vectordrawable:vectordrawable-animated:1.1.0" // AnimatedVectorDrawableCompat
+    implementation 'com.google.android.material:material:1.0.0'
 
     // Retrofit
-    implementation 'com.squareup.retrofit2:retrofit:2.5.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.6.2'
 
     // JSON Parsing
-    implementation 'com.google.code.gson:gson:2.8.5'
-    implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
+    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'com.squareup.retrofit2:converter-gson:2.6.2'
 
     //Glide
-    implementation 'com.github.bumptech.glide:glide:4.7.1'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.7.1'
+    implementation 'com.github.bumptech.glide:glide:4.10.0'
+    kapt 'com.github.bumptech.glide:compiler:4.10.0'
+
+    //Room
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version" // For Kotlin use kapt instead of annotationProcessor
+
+    // optional - Kotlin Extensions and Coroutines support for Room
+    implementation "androidx.room:room-ktx:$room_version"
+
+    // optional - RxJava support for Room
+    implementation "androidx.room:room-rxjava2:$room_version"
+
+    // optional - Guava support for Room, including Optional and ListenableFuture
+    implementation "androidx.room:room-guava:$room_version"
+
+    // Test helpers
+    testImplementation "androidx.room:room-testing:$room_version"
 
     // For control over item selection of both touch and mouse driven selection
     implementation "androidx.recyclerview:recyclerview-selection:$recyclerview_version"

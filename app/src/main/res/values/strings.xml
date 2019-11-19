@@ -13,5 +13,6 @@
     <string name="remove_from_wish_list_text">Remove from wish list</string>
     <string name="out_of_stock_text">Out of stock</string>
     <string name="app_name_toolbar">TASH</string>
+    <string name="appbar_scrolling_view_behavior" translatable="false">android.support.design.widget.AppBarLayout$ScrollingViewBehavior</string>
 
 </resources>

@@ -13,8 +13,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     android:id="@+id/wishListItem"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/imageItem"
@@ -69,7 +68,7 @@
         tools:text="sadsadsad dsadsadsad dsadsads wrewrewr rewrewrew ryrtytrytr">
     </TextView>
 
-    <view
+    <View
         android:id="@+id/firstColour"
         android:layout_width="40dp"
         android:layout_height="40dp"
@@ -78,9 +77,9 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/guideline2"
         app:layout_constraintTop_toBottomOf="@id/itemDescription">
-    </view>
+    </View>
 
-    <view
+    <View
         android:id="@+id/secondColour"
         android:layout_width="40dp"
         android:layout_height="40dp"
@@ -90,9 +89,9 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/firstColour"
         app:layout_constraintTop_toBottomOf="@id/itemDescription">
-    </view>
+    </View>
 
-    <view
+    <View
         android:id="@+id/thirdColour"
         android:layout_width="40dp"
         android:layout_height="40dp"
@@ -102,13 +101,13 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/secondColour"
         app:layout_constraintTop_toBottomOf="@id/itemDescription">
-    </view>
+    </View>
 
     <TextView
         android:id="@+id/outOfStock"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/out_of_stock_text"
+        android:visibility="gone"
         android:textSize="18sp"
         android:textStyle="bold"
         android:textColor="@color/textRedColor"
