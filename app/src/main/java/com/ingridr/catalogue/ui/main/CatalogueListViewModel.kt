@@ -16,7 +16,6 @@ import retrofit2.Response
 
 class CatalogueListViewModel : ViewModel() {
 
-    val test = MutableLiveData<String>()
     val products: MutableLiveData<List<Product>> = MutableLiveData()
     val wishList: MutableLiveData<List<Product>> = MutableLiveData()
     var dataBase: AppDatabase? = null
@@ -30,7 +29,6 @@ class CatalogueListViewModel : ViewModel() {
             override fun onResponse(call: Call<Products>?, response: Response<Products>?) {
                 if (response?.isSuccessful() == true) {
                     products.value = response.body()?.products
-                    test.value = "Product success"
                     Log.d("CatalogueListViewModel", "Products loaded from API")
                 } else {
                     val status = response?.code()
@@ -51,7 +49,7 @@ class CatalogueListViewModel : ViewModel() {
                 daoProducts.forEach { dbProduct ->
                     val product = products.value?.find { it.id == dbProduct.id }
                     if (product != null) {
-                        list.add(product)
+                        list.add(dbProduct)
                     }
                 }
             }
@@ -61,5 +59,17 @@ class CatalogueListViewModel : ViewModel() {
             val te = wishList
 
         }
+    }
+
+    fun subTotal() : String {
+        var subTotal = 0.0
+        wishList.value?.let {
+            it.forEach {
+                if(it.price != null)
+                    subTotal += it.price!!
+            }
+        }
+
+        return "Sub-Total"+"$ "+subTotal
     }
 }

@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.ingridr.catalogue.BR
 import com.ingridr.catalogue.CatalogueApplication
@@ -44,6 +45,12 @@ class CatalogueDetailFragment(private val product: Product) : Fragment() {
 
         viewModel.updateProductDetail(product)
 
+        viewModel.uiEvent.observe(this, Observer {
+            when(it.first){
+                UiEvents.FINISH ->
+                    this.activity?.finish()
+            }
+        })
         // TODO: Use the ViewModel
     }
 }

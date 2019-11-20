@@ -21,11 +21,16 @@ class CatalogueDetailsViewModel : ViewModel(), LifecycleObserver {
 
     val uiEvent = MutableLiveData<Pair<UiEvents, String>>()
     var description = MutableLiveData<String>()
+    var inWishList = MutableLiveData<Boolean>()
 
     fun updateProductDetail(product: Product) {
         this.product.value = product
         description.value = product.description
         colors.value = product.colors
+        val products  = dataBase?.productDao()?.getAll()
+        val pr = products?.find { it.id == product.id }
+        inWishList.value = (pr != null)
+
     }
 
     fun addToWishList() {
@@ -41,8 +46,8 @@ class CatalogueDetailsViewModel : ViewModel(), LifecycleObserver {
         dataBase?.let {
             if (product.value != null) {
                 it.productDao().deleteWishList(product.value!!)
+                uiEvent.value = Pair(UiEvents.FINISH, "")
             }
-            uiEvent.value = Pair(UiEvents.FINISH, "")
         }
     }
 

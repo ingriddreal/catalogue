@@ -31,7 +31,6 @@ class CatalogueDetailsActivity : AppCompatActivity() {
         }
     }
 
-    private lateinit var viewModel: CatalogueDetailsViewModel
     private lateinit var binding: CatalogueItemDetailBinding
     private lateinit var product: Product
 
@@ -39,16 +38,9 @@ class CatalogueDetailsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         val gson = Gson()
         binding = DataBindingUtil.setContentView(this, R.layout.catalogue_item_detail)
-        viewModel = ViewModelProviders.of(this).get(CatalogueDetailsViewModel::class.java)
         setContentView(R.layout.detail_activity)
         val toolBar = findViewById<Toolbar>(R.id.my_toolbar)
 
-        viewModel.uiEvent.observe(this, Observer {
-            when(it){
-                UiEvents.FINISH ->
-                    this.finish()
-            }
-        })
         val productStr = intent.extras?.get(SELECTED_PRODUCT)
         productStr?.let {
             product = gson.fromJson<Product>(it.toString(), Product::class.java)

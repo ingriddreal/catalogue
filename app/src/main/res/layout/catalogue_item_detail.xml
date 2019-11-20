@@ -268,12 +268,12 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="32dp"
             android:layout_marginBottom="16dp"
-            android:backgroundTint="@color/textRedColor"
-            android:onClick="@{() -> model.addToWishList()}"
-            android:text="@string/add_to_wish_list_text"
+            android:textColor="@color/whiteColor"
+            android:backgroundTint="@{(model.inWishList == true)? @android:color/black : @color/textRedColor}"
+            android:onClick="@{() -> (model.inWishList == true) ? model.removeFromWishList() : model.addToWishList()}"
+            android:text="@{(model.inWishList == true) ? @string/remove_from_wish_list_text :@string/add_to_wish_list_text}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/rateAppId" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-    <!--    </ScrollView>-->
 </layout>
